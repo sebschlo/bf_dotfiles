@@ -1,0 +1,51 @@
+# This is Git's per-user configuration file.
+[user]
+  name = Sebastian Schloesser
+  email = seb@breakfastny.com
+[alias]
+  s = status
+  sl = log --graph --author=Sebastian --pretty=format:'commit: %C(bold red)%h%Creset %C(red)<%H>%Creset %C(bold magenta)%d %Creset%ndate: %C(bold yellow)%cd %Creset%C(yellow)%cr%Creset%nauthor: %C(bold blue)%an%Creset %C(blue)<%ae>%Creset%n%C(cyan)%s%n%Creset'
+  l = log --oneline --graph --decorate $(git branch | tr -d ' *' | awk '{ print "master~1.."$0 }')
+  lg = log --color --graph --pretty=format:'%C(bold white)%h%Creset -%C(bold green)%d%Creset %s %C(bold green)(%cr)%Creset %C(bold blue)<%an>%Creset' --abbrev-commit --date=relative
+  lp = log --color --graph --pretty=format:'%C(bold white)%h%Creset -%C(bold green)%d%Creset %s %C(bold green)(%cr)%Creset %C(bold blue)<%an>%Creset' --abbrev-commit --date=relative --author=sebastian
+  b = branch
+  ca = commit --amend
+  c = commit
+  nb = checkout -b
+  db = branch -D
+  ap = add -p
+  co = checkout
+  rc = rebase --continue
+  rh = reset --hard
+  pick = cherry-pick
+  unstage = reset HEAD --
+  purge = clean -fd
+  uncommit = reset --soft HEAD^
+  dt = difftool
+  mt = mergetool
+[filter "lfs"]
+	process = git-lfs filter-process
+	required = true
+	clean = git-lfs clean -- %f
+	smudge = git-lfs smudge -- %f
+[core]
+	editor = nvim
+	excludesfile = /Users/seb/.gitignore
+[pager]
+	branch = false
+[diff]
+	tool = Kaleidoscope
+[difftool "Kaleidoscope"]
+	cmd = ksdiff --partial-changeset --relative-path \"$MERGED\" -- \"$LOCAL\" \"$REMOTE\"
+[difftool]
+	prompt = false
+[merge]
+	tool = Kaleidoscope
+[mergetool "Kaleidoscope"]
+	cmd = ksdiff --merge --output \"$MERGED\" --base \"$BASE\" -- \"$LOCAL\" --snapshot \"$REMOTE\" --snapshot
+	trustExitCode = true
+[mergetool]
+	prompt = false
+	keepBackup = false
+[init]
+	defaultBranch = main
