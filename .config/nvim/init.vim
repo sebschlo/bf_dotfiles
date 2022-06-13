@@ -36,8 +36,8 @@ call plug#end()
 set t_Co=256
 set ttyfast
 let g:airline_theme='violet'
-"colorscheme horseradish256
-colorscheme seoul256
+colorscheme horseradish256
+"colorscheme seoul256
 
 set showtabline=0
 let g:airline#extensions#tabline#enabled = 0
@@ -60,20 +60,19 @@ let g:deoplete#enable_at_startup = 1
 
 " SHORTCUTS
 " n
-nnoremap î :bnext<CR>
+nnoremap <C-N> :bnext<CR>
 " p
-nnoremap ð :bprevious<CR>
+nnoremap <C-P> :bprevious<CR>
 " u
 nnoremap õ :MundoToggle<CR>
 " h
-nnoremap è :NERDTreeToggle<CR>
+nnoremap <C-T> :NERDTreeToggle<CR>
 " j
 nnoremap ê :NERDTreeFind<CR>
 " f
-nnoremap æ :Rg<CR>
+"nnoremap <C-R> :Rg<CR>
 " o
-nnoremap ï :FZF<CR>
-nnoremap <C-T> :FZF<CR>
+nnoremap <C-R> :FZF<CR>
 " i
 nnoremap é :IndentGuidesToggle<CR>
 " w
