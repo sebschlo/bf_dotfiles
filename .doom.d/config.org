@@ -1,0 +1,595 @@
+#+TITLE: Emacs Doom Configuration
+#+PROPERTY: header-args :tangle-mode (identity #o444)
+
+* Declare which Doom Modules to Load
+
+This file controls what Doom modules are enabled and what order they load in.
+Remember to run =doom sync= or =doom/reload=  after modifying it.
+
+** Default Doom Packages
+#+BEGIN_SRC emacs-lisp :tangle init.el
+;;; init.el -*- lexical-binding: t; -*-
+
+;; This file controls what Doom modules are enabled and what order they load in.
+;; Remember to run 'doom sync' after modifying it!
+
+;; NOTE Press 'SPC h d h' (or 'C-h d h' for non-vim users) to access Doom's
+;;      documentation. There you'll find information about all of Doom's modules
+;;      and what flags they support.
+
+;; NOTE Move your cursor over a module's name (or its flags) and press 'K' (or
+;;      'C-c g k' for non-vim users) to view its documentation. This works on
+;;      flags as well (those symbols that start with a plus).
+;;
+;;      Alternatively, press 'gd' (or 'C-c g d') on a module to browse its
+;;      directory (for easy access to its source code).
+
+(doom! :input
+
+       :completion
+       company           ; the ultimate code completion backend
+       ;;helm              ; the *other* search engine for love and life
+       ;;ido               ; the other *other* search engine...
+       ivy               ; a search engine for love and life
+
+       :ui
+       deft              ; notational velocity for Emacs
+       doom              ; what makes DOOM look the way it does
+       doom-dashboard    ; a nifty splash screen for Emacs
+       doom-quit         ; DOOM quit-message prompts when you quit Emacs
+       fill-column       ; a `fill-column' indicator
+       hl-todo           ; highlight TODO/FIXME/NOTE/DEPRECATED/HACK/REVIEW
+       ;;hydra
+       ;;indent-guides     ; highlighted indent columns
+       modeline          ; snazzy, Atom-inspired modeline, plus API
+       nav-flash         ; blink the current line after jumping
+       neotree           ; a project drawer, like NERDTree for vim
+       ophints           ; highlight the region an operation acts on
+       (popup +defaults)   ; tame sudden yet inevitable temporary windows
+       ;;pretty-code       ; ligatures or substitute text with pretty symbols
+       ;;tabs              ; an tab bar for Emacs
+       treemacs          ; a project drawer, like neotree but cooler
+       ;;unicode           ; extended unicode support for various languages
+       vc-gutter         ; vcs diff in the fringe
+       vi-tilde-fringe   ; fringe tildes to mark beyond EOB
+       window-select     ; visually switch windows
+       workspaces        ; tab emulation, persistence & separate workspaces
+       zen               ; distraction-free coding or writing
+
+       :editor
+       (evil +everywhere); come to the dark side, we have cookies
+       file-templates    ; auto-snippets for empty files
+       fold              ; (nigh) universal code folding
+       (format +onsave)  ; automated prettiness
+       ;;god               ; run Emacs commands without modifier keys
+       lispy             ; vim for lisp, for people who don't like vim
+       multiple-cursors  ; editing in many places at once
+       ;;objed             ; text object editing for the innocent
+       ;;parinfer          ; turn lisp into python, sort of
+       ;;rotate-text       ; cycle region at point between text candidates
+       snippets          ; my elves. They type so I don't have to
+       word-wrap         ; soft wrapping with language-aware indent
+
+       :emacs
+       dired             ; making dired pretty [functional]
+       electric          ; smarter, keyword-based electric-indent
+       ibuffer         ; interactive buffer management
+       vc                ; version-control and Emacs, sitting in a tree
+
+       :term
+       ;;eshell            ; a consistent, cross-platform shell (WIP)
+       ;;shell             ; a terminal REPL for Emacs
+       ;;term              ; terminals in Emacs
+       ;;vterm             ; another terminals in Emacs
+
+       :checkers
+       syntax              ; tasing you for every semicolon you forget
+       spell             ; tasing you for misspelling mispelling
+       grammar           ; tasing grammar mistake every you make
+
+       :tools
+       ;;ansible
+       ;;debugger          ; FIXME stepping through code, to help you add bugs
+       ;;direnv
+       ;;docker
+       ;;editorconfig      ; let someone else argue about tabs vs spaces
+       ein               ; tame Jupyter notebooks with emacs
+       (eval +overlay)     ; run code, run (also, repls)
+       ;;gist              ; interacting with github gists
+       lookup              ; navigate your code and its documentation
+       lsp
+       macos             ; MacOS-specific commands
+       magit             ; a git porcelain for Emacs
+       ;;make              ; run make tasks from Emacs
+       ;;pass              ; password manager for nerds
+       pdf               ; pdf enhancements
+       ;;prodigy           ; FIXME managing external services & code builders
+       ;;rgb               ; creating color strings
+       ;;terraform         ; infrastructure as code
+       ;;tmux              ; an API for interacting with tmux
+       ;;upload            ; map local to remote projects via ssh/ftp
+
+       :lang
+       ;;agda              ; types of types of types of types...
+       ;;assembly          ; assembly for fun or debugging
+       ;;cc                ; C/C++/Obj-C madness
+       ;;clojure           ; java with a lisp
+       ;;common-lisp       ; if you've seen one lisp, you've seen them all
+       ;;coq               ; proofs-as-programs
+       ;;crystal           ; ruby at the speed of c
+       csharp            ; unity, .NET, and mono shenanigans
+       data              ; config/data formats
+       ;;(dart +flutter)   ; paint ui and not much else
+       ;;elixir            ; erlang done right
+       ;;elm               ; care for a cup of TEA?
+       emacs-lisp        ; drown in parentheses
+       ;;erlang            ; an elegant language for a more civilized age
+       ;;ess               ; emacs speaks statistics
+       ;;faust             ; dsp, but you get to keep your soul
+       ;;fsharp           ; ML stands for Microsoft's Language
+       ;;fstar             ; (dependent) types and (monadic) effects and Z3
+       ;;go                ; the hipster dialect
+       ;;(haskell +dante)  ; a language that's lazier than I am
+       ;;hy                ; readability of scheme w/ speed of python
+       ;;idris             ;
+       ;;(java +meghanada) ; the poster child for carpal tunnel syndrome
+       javascript        ; all(hope(abandon(ye(who(enter(here))))))
+       ;;julia             ; a better, faster MATLAB
+       kotlin            ; a better, slicker Java(Script)
+       latex             ; writing papers in Emacs has never been so fun
+       ;;lean
+       ;;factor
+       ;;ledger            ; an accounting system in Emacs
+       ;;lua               ; one-based indices? one-based indices
+       markdown          ; writing docs for people to ignore
+       ;;nim               ; python + lisp at the speed of c
+       ;;nix               ; I hereby declare "nix geht mehr!"
+       ;;ocaml             ; an objective camel
+       org               ; organize your plain life in plain text
+       ;;perl              ; write code no one else can comprehend
+       ;;php               ; perl's insecure younger brother
+       ;;plantuml          ; diagrams for confusing people more
+       ;;purescript        ; javascript, but functional
+       python            ; beautiful is better than ugly
+       ;;qt                ; the 'cutest' gui framework ever
+       ;;racket            ; a DSL for DSLs
+       ;;rest              ; Emacs as a REST client
+       ;;rst               ; ReST in peace
+       (ruby +rails)     ; 1.step {|i| p "Ruby is #{i.even? ? 'love' : 'life'}"}
+       ;;rust              ; Fe2O3.unwrap().unwrap().unwrap().unwrap()
+       ;;scala             ; java, but good
+       ;;scheme            ; a fully conniving family of lisps
+       sh                ; she sells {ba,z,fi}sh shells on the C xor
+       ;;sml
+       ;;solidity          ; do you need a blockchain? No.
+       swift             ; who asked for emoji variables?
+       ;;terra             ; Earth and Moon in alignment for performance.
+       ;;web               ; the tubes
+
+       :email
+       ;;(mu4e +gmail)
+       ;;notmuch
+       ;;(wanderlust +gmail)
+
+       :app
+       calendar
+       ;;irc               ; how neckbeards socialize
+       ;;(rss +org)        ; emacs as an RSS reader
+       ;;twitter           ; twitter client https://twitter.com/vnought
+
+       :config
+       literate
+       (default +bindings +smartparens))
+
+#+END_SRC
+
+** Any desired package not declared in a Doom module must be declared here.
+#+BEGIN_SRC emacs-lisp
+; To install a package with Doom you must declare them here, run 'doom sync' on
+; the command line, then restart Emacs for the changes to take effect.
+; Alternatively, use M-x doom/reload.
+;
+; WARNING: Disabling core packages listed in ~/.emacs.d/core/packages.el may
+; have nasty side-effects and is not recommended.
+
+
+; All of Doom's packages are pinned to a specific commit, and updated from
+; release to release. To un-pin all packages and live on the edge, do:
+(unpin! t)
+
+; ...but to unpin a single package:
+(unpin! pinned-package)
+; Use it to unpin multiple packages
+(unpin! pinned-package another-pinned-package)
+
+
+; To install SOME-PACKAGE from MELPA, ELPA or emacsmirror:
+(package! some-package)
+
+
+; To install a package directly from a particular repo, you'll need to specify
+; a `:recipe'. You'll find documentation on what `:recipe' accepts here:
+; https://github.com/raxod502/straight.el#the-recipe-format
+(package! another-package
+  :recipe (:host github :repo "username/repo"))
+
+; If the package you are trying to install does not contain a PACKAGENAME.el
+; file, or is located in a subdirectory of the repo, you'll need to specify
+; `:files' in the `:recipe':
+(package! this-package
+  :recipe (:host github :repo "username/repo"
+           :files ("some-file.el" "src/lisp/*.el")))
+
+; If you'd like to disable a package included with Doom, for whatever reason,
+; you can do so here with the `:disable' property:
+(package! builtin-package :disable t)
+
+; You can override the recipe of a built in package without having to specify
+; all the properties for `:recipe'. These will inherit the rest of its recipe
+; from Doom or MELPA/ELPA/Emacsmirror:
+(package! builtin-package :recipe (:nonrecursive t))
+(package! builtin-package-2 :recipe (:repo "myfork/package"))
+
+; Specify a `:branch' to install a package from a particular branch or tag.
+; This is required for some packages whose default branch isn't 'master' (which
+; our package manager can't deal with; see raxod502/straight.el#279)
+(package! builtin-package :recipe (:branch "develop"))
+
+
+#+END_SRC
+
+#+BEGIN_SRC emacs-lisp :tangle packages.el
+;; -*- no-byte-compile: t; -*-
+;;; $DOOMDIR/packages.el
+(package! company-sourcekit)
+(package! undo-tree)
+(package! org-noter)
+(package! org-roam
+          :recipe (:host github :repo "jethrokuan/org-roam"))
+(package! company-org-roam
+  :recipe (:host github :repo "jethrokuan/company-org-roam"))
+(package! lsp-sourcekit)
+#+END_SRC
+
+* config.el
+:PROPERTIES:
+:header-args: :tangle config.el
+:END:
+** Header
+Set =lexical-binding= for this file.
+
+#+begin_src emacs-lisp
+;;; $DOOMDIR/config.el -*- lexical-binding: t; -*-
+#+end_src
+
+** Global Config
+#+BEGIN_SRC emacs-lisp
+;; Here are some additional functions/macros that could help you configure Doom:
+;;
+;; - `load!' for loading external *.el files relative to this one
+;; - `use-package' for configuring packages
+;; - `after!' for running code after a package has loaded
+;; - `add-load-path!' for adding directories to the `load-path', relative to
+;;   this file. Emacs searches the `load-path' when you load packages with
+;;   `require' or `use-package'.
+;; - `map!' for binding new keys
+;;
+;; To get information about any of these functions/macros, move the cursor over
+;; the highlighted symbol at press 'K' (non-evil users must press 'C-c g k').
+;; This will open documentation for it, including demos of how they are used.
+;;
+;; You can also try 'gd' (or 'C-c g d') to jump to their definition and see how
+;; they are implemented.
+#+END_SRC
+*** Contact Info
+Some functionality uses this to identify you, e.g. GPG configuration, email
+clients, file templates and snippets.
+#+BEGIN_SRC emacs-lisp
+(setq user-full-name "Sebastian Schloesser"
+      user-mail-address "sebastian@academia.edu")
+#+END_SRC
+
+*** Font
+
+#+BEGIN_SRC emacs-lisp
+;; Doom exposes five (optional) variables for controlling fonts in Doom. Here
+;; are the three important ones:
+;;
+;; + `doom-font'
+;; + `doom-variable-pitch-font'
+;; + `doom-big-font' -- used for `doom-big-font-mode'; use this for
+;;   presentations or streaming.
+;;
+;; They all accept either a font-spec, font string ("Input Mono-12"), or xlfd
+;; font string. You generally only need these two:
+(setq doom-font (font-spec :family "monospace" :size 16))
+(setq doom-variable-pitch-font (font-spec :family "Avenir Next" :size 12))
+#+END_SRC
+
+*** Theme
+#+BEGIN_SRC emacs-lisp
+;There are two ways to load a theme. Both assume the theme is installed and
+;available. You can either set `doom-theme' or manually load a theme with the
+;`load-theme' function. This is the default:
+
+;; (setq doom-theme 'doom-one)
+(setq doom-theme 'doom-acario-light)
+;; (setq doom-theme 'doom-horizon)
+;; (setq doom-theme 'doom-laserwave)
+;; (setq doom-theme 'doom-moonlight)
+;; (setq doom-theme 'doom-nord)
+;; (setq doom-theme 'doom-nord-light)
+;; (setq doom-theme 'doom-outrun-electric)
+#+END_SRC
+*** Visual Settings
+**** Line numbers
+#+BEGIN_SRC emacs-lisp
+;; This determines the style of line numbers in effect. If set to `nil', line
+;; numbers are disabled. For relative line numbers, set this to `relative'.
+(setq display-line-numbers-type 'relative)
+(setq doom-line-numbers-style 'relative)
+#+END_SRC
+
+**** Disable auto fill mode, rather use visual-line-mode with soft wraps
+#+BEGIN_SRC emacs-lisp
+(remove-hook 'text-mode-hook #'auto-fill-mode)
+(add-hook 'message-mode-hook #'word-wrap-mode)
+(global-visual-line-mode t)
+(setq evil-respect-visual-line-mode t)
+(setq hl-fill-column-mode nil)
+(map! :n "j" #'evil-next-visual-line
+      :n "k" #'evil-previous-visual-line)
+#+END_SRC
+
+**** Don't show line number highligting
+#+BEGIN_SRC emacs-lisp
+(setq hl-fill-column-mode nil)
+#+END_SRC
+*** Windows
+#+BEGIN_SRC emacs-lisp
+(defun window-split-toggle ()
+  "Toggle between horizontal and vertical split with two windows."
+  (interactive)
+  (if (> (length (window-list)) 2)
+      (error "Can't toggle with more than 2 windows!")
+    (let ((func (if (window-full-height-p)
+                    #'split-window-vertically
+                  #'split-window-horizontally)))
+      (delete-other-windows)
+      (funcall func)
+      (save-selected-window
+        (other-window 1)
+        (switch-to-buffer (other-buffer))))))
+#+END_SRC
+
+*** Bindings
+#+BEGIN_SRC emacs-lisp
+;; Window navigation
+(map!
+ "C-h"    #'evil-window-left
+ "C-j"    #'evil-window-down
+ "C-k"    #'evil-window-up
+ "C-l"    #'evil-window-right
+ "M-w"    #'delete-frame
+ "C-`"      #'+popup/toggle
+ "<C-tab>"  #'+popup/other
+)
+
+;; Org checkboxes
+(map! (:leader :desc "Org Toggle Checkbox" "m m" #'org-toggle-checkbox))
+
+;; Helpful
+(map! (:leader :desc "Helpful at point" "h h" #'helpful-at-point))
+
+;; copy/paste
+(map! (:leader :desc "Show the Kill Ring" "v" #'counsel-yank-pop))
+
+;; Mark todo as done
+(defun my-org-todo-done ()
+  (interactive)
+  "Mark todo as done"
+  (org-todo 'done))
+(map! (:leader :desc "Mark todo as done" "d" #'my-org-todo-done))
+
+(map! (:leader :desc "Schedule todo" "m s" #'org-schedule))
+
+;; Insert time on timestamps
+(defun my-org-time-stamp ()
+  (interactive)
+  "Insert timestamp with time"
+  (org-time-stamp t))
+(map! (:leader :desc "Current Timestamp" "m c" #'my-org-time-stamp))
+
+;; Clipboard into OSX
+(map! (:leader :desc "Copy into OSX and rink" "y" #'clipboard-kill-ring-save))
+(map! "M-p" #'clipboard-yank)
+
+;; Tags
+(map! (:leader :desc "Insert tag from global list" "m t" #'air-org-set-tags))
+#+END_SRC
+*** Clipboard
+
+#+BEGIN_SRC emacs-lisp
+(setq select-enable-clipboard nil)
+#+END_SRC
+
+#+RESULTS:
+
+*** Shell
+#+BEGIN_SRC emacs-lisp
+(setenv "SHELL" "/bin/bash")
+(setq explicit-shell-file-name "/bin/bash")
+#+END_SRC
+*** Encryption
+#+BEGIN_SRC emacs-lisp
+(require 'org-crypt)
+(require 'epa-file)
+(epa-file-enable)
+(setq org-tags-exclude-from-inheritance (quote ("crypt"))
+      org-crypt-key nil)
+#+END_SRC
+** Org
+*** Basic Config
+#+BEGIN_SRC emacs-lisp
+;; If you use `org' and don't want your org files in the default location below,
+;; change `org-directory'. It must be set before org loads!
+(setq org-directory "~/Dropbox/org")
+(setq org-agenda-files '("~/Dropbox/org"))
+
+(after! org
+  ;; Log timestamp on org todos
+  (setq org-log-done 'time)
+
+  ;; make sure cookies update
+  (defun +org|update-cookies ()
+    "Update counts in headlines (aka \"cookies\")."
+    (when (and buffer-file-name (file-exists-p buffer-file-name))
+      (org-update-statistics-cookies t)))
+
+  (add-hook 'before-save-hook #'+org|update-cookies nil t)
+  (add-hook 'evil-insert-state-exit-hook #'+org|update-cookies nil t)
+
+  ;; Org smart insert item. [ Don't want this behavior but leaving here for binding reference ]
+  ;; (after! org
+  ;;   (map! :map evil-org-mode-map
+  ;;         :n "o" #'+org/insert-item-below))
+
+  ;; Auto save all the time
+  ;; (add-hook 'auto-save-hook 'my-commit-org-files) TURNED OFF FOR NOW, TOO MUCH DROPBOX DATA
+  (defun my-commit-org-files ()
+    (interactive)
+    "Commit all org files"
+    (org-save-all-org-buffers)
+    (shell-command "~/Dropbox/org/auto_commit.sh"))
+
+  ;; Todo keywords
+  (setq org-todo-keywords
+        '((sequence "TODO(t)" "PROJ(p)" "STRT(s!)" "|" "DONE(d@/!)" "KILL(k@/!)")
+          (sequence "WAIT(w@/!)" "|" "DELG(g@/!)")))
+
+
+  ;; Tags
+  (defun air--org-swap-tags (tags)
+    "Replace any tags on the current headline with TAGS. The assumption is that TAGS will be a string conforming to Org Mode's tag format specifications, or nil to remove all tags."
+    (let ((old-tags (org-get-tags-string))
+          (tags (if tags
+                    (concat " " tags)
+                  "")))
+      (save-excursion
+        (beginning-of-line)
+        (re-search-forward
+         (concat "[ \t]*" (regexp-quote old-tags) "[ \t]*$")
+         (line-end-position) t)
+        (replace-match tags)
+        (org-set-tags t))))
+
+
+
+  (defun air-org-set-tags (tag)
+    "Add TAG if it is not in the list of tags, remove it otherwise. TAG is chosen interactively from the global tags completion table."
+    (interactive
+     (list (let ((org-last-tags-completion-table
+                  (if (derived-mode-p 'org-mode)
+                      (org-uniquify
+                       (delq nil (append (org-get-buffer-tags)
+                                         (org-global-tags-completion-table))))
+                    (org-global-tags-completion-table))))
+             (org-icompleting-read
+              "Tag: " 'org-tags-completion-function nil nil nil
+              'org-tags-history))))
+    (let* ((cur-list (org-get-tags))
+           (new-tags (mapconcat 'identity
+                                (if (member tag cur-list)
+                                    (delete tag cur-list)
+                                  (append cur-list (list tag)))
+                                ":"))
+           (new (if (> (length new-tags) 1) (concat " :" new-tags ":")
+                  nil)))
+      (air--org-swap-tags new)))
+
+
+  ;; Todo filteres
+  (setq org-agenda-todo-ignore-scheduled t
+        org-agenda-todo-ignore-deadlines t
+        hl-fill-column-mode nil))
+
+;; Alfred Integration
+(defadvice org-switch-to-buffer-other-window
+    (after supress-window-splitting activate)
+  "Delete the extra window if we're in a capture frame"
+  (if (equal "remember" (frame-parameter nil 'name))
+      (delete-other-windows)))
+
+(defadvice org-capture-finalize
+    (after delete-capture-frame activate)
+  "Advise capture-finalize to close the frame"
+  (when (and (equal "remember" (frame-parameter nil 'name))
+             (not (eq this-command 'org-capture-refile)))
+    (delete-frame)))
+
+(defadvice org-capture-refile
+    (after delete-capture-frame activate)
+  "Advise org-refile to close the frame"
+  (delete-frame))
+
+(defun make-orgcapture-frame ()
+  "Create a new frame and run org-capture."
+  (interactive)
+  (make-frame '((name . "remember") (width . 80) (height . 16)
+                (top . 400) (left . 300)
+                (font . "-apple-Monaco-medium-normal-normal-*-13-*-*-*-m-0-iso10646-1")
+                ))
+  (select-frame-by-name "remember")
+  (org-capture)
+  (delete-frame "remember"))
+#+END_SRC
+*** Org Noter
+#+BEGIN_SRC emacs-lisp
+(use-package! org-noter
+  :after org
+  :config
+  (setq org-noter-notes-window-location 'vertical-split
+        org-noter-notes-search-path '("~/Dropbox/org")
+        org-noter-auto-save-last-location t
+        org-noter-default-notes-file-names '("~/Dropbox/org/pdf_notes.org")))
+#+END_SRC
+*** Org Roam
+#+begin_src emacs-lisp
+(use-package org-roam
+      :hook
+      (after-init . org-roam-mode)
+      :custom
+      (org-roam-directory "~/Dropbox/org")
+      :bind (:map org-roam-mode-map
+              (("C-c n l" . org-roam)
+               ("C-c n f" . org-roam-find-file)
+               ("C-c n j" . org-roam-jump-to-index)
+               ("C-c n b" . org-roam-switch-to-buffer)
+               ("C-c n g" . org-roam-graph))
+              :map org-mode-map
+              (("C-c n i" . org-roam-insert))))
+
+(use-package! company-org-roam
+              :when (featurep! :completion company)
+              :after org-roam
+              :config
+              (set-company-backend! 'org-mode '(company-org-roam company-yasnippet company-dabbrev)))
+#+end_src
+
+** Swift
+#+BEGIN_SRC emacs-lisp
+;; (require 'company-sourcekit)
+;; (add-to-list 'company-backends 'company-sourcekit)
+
+(use-package lsp-sourcekit
+  :after lsp-mode
+  :config
+  (setq lsp-sourcekit-executable "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/sourcekit-lsp"))
+
+(use-package swift-mode
+  :hook (swift-mode . (lambda () (lsp))))
+
+(with-eval-after-load 'lsp-mode
+  (setq lsp-diagnostics-modeline-scope :project)
+  (add-hook 'lsp-managed-mode-hook 'lsp-diagnostics-modeline-mode))
+#+END_SRC
