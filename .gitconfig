@@ -30,7 +30,7 @@
 	smudge = git-lfs smudge -- %f
 [core]
 	editor = nvim
-	excludesfile = /Users/seb/.gitignore
+	excludesfile = /Users/seb/.gitignore_global
 [pager]
 	branch = false
 [diff]
