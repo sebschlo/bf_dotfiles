@@ -18,7 +18,7 @@
 ;; they are implemented.
 
 (setq user-full-name "Sebastian Schloesser"
-      user-mail-address "sebastian@academia.edu")
+      user-mail-address "seb@breakfastny.com")
 
 ;; Doom exposes five (optional) variables for controlling fonts in Doom. Here
 ;; are the three important ones:
@@ -38,12 +38,12 @@
 ;`load-theme' function. This is the default:
 
 ;; (setq doom-theme 'doom-one)
-(setq doom-theme 'doom-acario-light)
+;; (setq doom-theme 'doom-acario-light)
 ;; (setq doom-theme 'doom-horizon)
 ;; (setq doom-theme 'doom-laserwave)
 ;; (setq doom-theme 'doom-moonlight)
 ;; (setq doom-theme 'doom-nord)
-;; (setq doom-theme 'doom-nord-light)
+(setq doom-theme 'doom-nord-light)
 ;; (setq doom-theme 'doom-outrun-electric)
 
 ;; This determines the style of line numbers in effect. If set to `nil', line
@@ -61,6 +61,12 @@
 
 (setq hl-fill-column-mode nil)
 
+;; Enable mouse support
+(xterm-mouse-mode t)
+(unless window-system
+(global-set-key (kbd "<mouse-4>") 'scroll-down-line)
+(global-set-key (kbd "<mouse-5>") 'scroll-up-line))
+
 (defun window-split-toggle ()
   "Toggle between horizontal and vertical split with two windows."
   (interactive)
@@ -76,15 +82,15 @@
         (switch-to-buffer (other-buffer))))))
 
 ;; Window navigation
-(map!
- "C-h"    #'evil-window-left
- "C-j"    #'evil-window-down
- "C-k"    #'evil-window-up
- "C-l"    #'evil-window-right
- "M-w"    #'delete-frame
- "C-`"      #'+popup/toggle
- "<C-tab>"  #'+popup/other
-)
+;; (map!
+;;  "C-h"    #'evil-window-left
+;;  "C-j"    #'evil-window-down
+;;  "C-k"    #'evil-window-up
+;;  "C-l"    #'evil-window-right
+;;  "M-w"    #'delete-frame
+;;  "C-`"      #'+popup/toggle
+;;  "<C-tab>"  #'+popup/other
+;; )
 
 ;; Org checkboxes
 (map! (:leader :desc "Org Toggle Checkbox" "m m" #'org-toggle-checkbox))
@@ -120,8 +126,8 @@
 
 (setq select-enable-clipboard nil)
 
-(setenv "SHELL" "/bin/bash")
-(setq explicit-shell-file-name "/bin/bash")
+(setenv "SHELL" "/bin/zsh")
+(setq explicit-shell-file-name "/bin/zsh")
 
 (require 'org-crypt)
 (require 'epa-file)
@@ -131,8 +137,9 @@
 
 ;; If you use `org' and don't want your org files in the default location below,
 ;; change `org-directory'. It must be set before org loads!
-(setq org-directory "~/Dropbox/org")
-(setq org-agenda-files '("~/Dropbox/org"))
+(setq org-directory "~/org")
+;;(setq org-agenda-files '("~/org"))
+(setq org-agenda-files (directory-files-recursively "~/org/" "\\.org$"))
 
 (after! org
   ;; Log timestamp on org todos
@@ -148,9 +155,9 @@
   (add-hook 'evil-insert-state-exit-hook #'+org|update-cookies nil t)
 
   ;; Org smart insert item. [ Don't want this behavior but leaving here for binding reference ]
-  ;; (after! org
-  ;;   (map! :map evil-org-mode-map
-  ;;         :n "o" #'+org/insert-item-below))
+  (map! :after evil-org
+        :map evil-org-mode-map
+        :n "C-o" #'+org/insert-item-below)
 
   ;; Auto save all the time
   ;; (add-hook 'auto-save-hook 'my-commit-org-files) TURNED OFF FOR NOW, TOO MUCH DROPBOX DATA
@@ -158,7 +165,7 @@
     (interactive)
     "Commit all org files"
     (org-save-all-org-buffers)
-    (shell-command "~/Dropbox/org/auto_commit.sh"))
+    (shell-command "~/org/auto_commit.sh"))
 
   ;; Todo keywords
   (setq org-todo-keywords
@@ -206,7 +213,7 @@
       (air--org-swap-tags new)))
 
 
-  ;; Todo filteres
+  ;; Todo filters
   (setq org-agenda-todo-ignore-scheduled t
         org-agenda-todo-ignore-deadlines t
         hl-fill-column-mode nil))
@@ -245,15 +252,15 @@
   :after org
   :config
   (setq org-noter-notes-window-location 'vertical-split
-        org-noter-notes-search-path '("~/Dropbox/org")
+        org-noter-notes-search-path '("~/org")
         org-noter-auto-save-last-location t
-        org-noter-default-notes-file-names '("~/Dropbox/org/pdf_notes.org")))
+        org-noter-default-notes-file-names '("~/org/pdf_notes.org")))
 
 (use-package org-roam
       :hook
       (after-init . org-roam-mode)
       :custom
-      (org-roam-directory "~/Dropbox/org")
+      (org-roam-directory "~/org")
       :bind (:map org-roam-mode-map
               (("C-c n l" . org-roam)
                ("C-c n f" . org-roam-find-file)
@@ -262,6 +269,15 @@
                ("C-c n g" . org-roam-graph))
               :map org-mode-map
               (("C-c n i" . org-roam-insert))))
+(map! :leader
+      (:prefix-map ("j" . "journal")
+       :desc "Capture new entry" "n" #'org-roam-dailies-capture-today
+       :desc "Go to today's entry" "t" #'org-roam-dailies-find-today
+       :desc "Go to yesterday's entry" "y" #'org-roam-dailies-find-yesterday
+       :desc "Go to specific date" "d" #'org-roam-dailies-find-date))
+(map! :leader
+      :desc "Add org-roam node"
+      "a" #'org-roam-node-insert)
 
 (use-package! company-org-roam
               :when (featurep! :completion company)

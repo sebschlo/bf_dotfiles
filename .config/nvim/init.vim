@@ -70,9 +70,9 @@ nnoremap <C-T> :NERDTreeToggle<CR>
 " j
 nnoremap ê :NERDTreeFind<CR>
 " f
-"nnoremap <C-R> :Rg<CR>
+nnoremap <C-R> :Rg<CR>
 " o
-nnoremap <C-R> :FZF<CR>
+nnoremap <C-S> :FZF<CR>
 " i
 nnoremap é :IndentGuidesToggle<CR>
 " w

@@ -112,7 +112,7 @@ Remember to run =doom sync= or =doom/reload=  after modifying it.
        :lang
        ;;agda              ; types of types of types of types...
        ;;assembly          ; assembly for fun or debugging
-       ;;cc                ; C/C++/Obj-C madness
+       cc                ; C/C++/Obj-C madness
        ;;clojure           ; java with a lisp
        ;;common-lisp       ; if you've seen one lisp, you've seen them all
        ;;coq               ; proofs-as-programs
@@ -135,7 +135,7 @@ Remember to run =doom sync= or =doom/reload=  after modifying it.
        ;;(java +meghanada) ; the poster child for carpal tunnel syndrome
        javascript        ; all(hope(abandon(ye(who(enter(here))))))
        ;;julia             ; a better, faster MATLAB
-       kotlin            ; a better, slicker Java(Script)
+       ;;kotlin            ; a better, slicker Java(Script)
        latex             ; writing papers in Emacs has never been so fun
        ;;lean
        ;;factor
@@ -155,7 +155,7 @@ Remember to run =doom sync= or =doom/reload=  after modifying it.
        ;;racket            ; a DSL for DSLs
        ;;rest              ; Emacs as a REST client
        ;;rst               ; ReST in peace
-       (ruby +rails)     ; 1.step {|i| p "Ruby is #{i.even? ? 'love' : 'life'}"}
+       ;;(ruby +rails)     ; 1.step {|i| p "Ruby is #{i.even? ? 'love' : 'life'}"}
        ;;rust              ; Fe2O3.unwrap().unwrap().unwrap().unwrap()
        ;;scala             ; java, but good
        ;;scheme            ; a fully conniving family of lisps
@@ -184,7 +184,7 @@ Remember to run =doom sync= or =doom/reload=  after modifying it.
 #+END_SRC
 
 ** Any desired package not declared in a Doom module must be declared here.
-#+BEGIN_SRC emacs-lisp
+#+begin_quote emacs-lisp
 ; To install a package with Doom you must declare them here, run 'doom sync' on
 ; the command line, then restart Emacs for the changes to take effect.
 ; Alternatively, use M-x doom/reload.
@@ -234,9 +234,7 @@ Remember to run =doom sync= or =doom/reload=  after modifying it.
 ; This is required for some packages whose default branch isn't 'master' (which
 ; our package manager can't deal with; see raxod502/straight.el#279)
 (package! builtin-package :recipe (:branch "develop"))
-
-
-#+END_SRC
+#+end_quote
 
 #+BEGIN_SRC emacs-lisp :tangle packages.el
 ;; -*- no-byte-compile: t; -*-
@@ -286,7 +284,7 @@ Some functionality uses this to identify you, e.g. GPG configuration, email
 clients, file templates and snippets.
 #+BEGIN_SRC emacs-lisp
 (setq user-full-name "Sebastian Schloesser"
-      user-mail-address "sebastian@academia.edu")
+      user-mail-address "seb@breakfastny.com")
 #+END_SRC
 
 *** Font
@@ -313,12 +311,12 @@ clients, file templates and snippets.
 ;`load-theme' function. This is the default:
 
 ;; (setq doom-theme 'doom-one)
-(setq doom-theme 'doom-acario-light)
+;; (setq doom-theme 'doom-acario-light)
 ;; (setq doom-theme 'doom-horizon)
 ;; (setq doom-theme 'doom-laserwave)
 ;; (setq doom-theme 'doom-moonlight)
 ;; (setq doom-theme 'doom-nord)
-;; (setq doom-theme 'doom-nord-light)
+(setq doom-theme 'doom-nord-light)
 ;; (setq doom-theme 'doom-outrun-electric)
 #+END_SRC
 *** Visual Settings
@@ -347,6 +345,12 @@ clients, file templates and snippets.
 #+END_SRC
 *** Windows
 #+BEGIN_SRC emacs-lisp
+;; Enable mouse support
+(xterm-mouse-mode t)
+(unless window-system
+(global-set-key (kbd "<mouse-4>") 'scroll-down-line)
+(global-set-key (kbd "<mouse-5>") 'scroll-up-line))
+
 (defun window-split-toggle ()
   "Toggle between horizontal and vertical split with two windows."
   (interactive)
@@ -365,15 +369,15 @@ clients, file templates and snippets.
 *** Bindings
 #+BEGIN_SRC emacs-lisp
 ;; Window navigation
-(map!
- "C-h"    #'evil-window-left
- "C-j"    #'evil-window-down
- "C-k"    #'evil-window-up
- "C-l"    #'evil-window-right
- "M-w"    #'delete-frame
- "C-`"      #'+popup/toggle
- "<C-tab>"  #'+popup/other
-)
+;; (map!
+;;  "C-h"    #'evil-window-left
+;;  "C-j"    #'evil-window-down
+;;  "C-k"    #'evil-window-up
+;;  "C-l"    #'evil-window-right
+;;  "M-w"    #'delete-frame
+;;  "C-`"      #'+popup/toggle
+;;  "<C-tab>"  #'+popup/other
+;; )
 
 ;; Org checkboxes
 (map! (:leader :desc "Org Toggle Checkbox" "m m" #'org-toggle-checkbox))
@@ -407,19 +411,18 @@ clients, file templates and snippets.
 ;; Tags
 (map! (:leader :desc "Insert tag from global list" "m t" #'air-org-set-tags))
 #+END_SRC
-*** Clipboard
 
+*** Clipboard
 #+BEGIN_SRC emacs-lisp
 (setq select-enable-clipboard nil)
 #+END_SRC
 
-#+RESULTS:
-
 *** Shell
 #+BEGIN_SRC emacs-lisp
-(setenv "SHELL" "/bin/bash")
-(setq explicit-shell-file-name "/bin/bash")
+(setenv "SHELL" "/bin/zsh")
+(setq explicit-shell-file-name "/bin/zsh")
 #+END_SRC
+
 *** Encryption
 #+BEGIN_SRC emacs-lisp
 (require 'org-crypt)
@@ -428,13 +431,15 @@ clients, file templates and snippets.
 (setq org-tags-exclude-from-inheritance (quote ("crypt"))
       org-crypt-key nil)
 #+END_SRC
+
 ** Org
 *** Basic Config
 #+BEGIN_SRC emacs-lisp
 ;; If you use `org' and don't want your org files in the default location below,
 ;; change `org-directory'. It must be set before org loads!
-(setq org-directory "~/Dropbox/org")
-(setq org-agenda-files '("~/Dropbox/org"))
+(setq org-directory "~/org")
+;;(setq org-agenda-files '("~/org"))
+(setq org-agenda-files (directory-files-recursively "~/org/" "\\.org$"))
 
 (after! org
   ;; Log timestamp on org todos
@@ -450,9 +455,9 @@ clients, file templates and snippets.
   (add-hook 'evil-insert-state-exit-hook #'+org|update-cookies nil t)
 
   ;; Org smart insert item. [ Don't want this behavior but leaving here for binding reference ]
-  ;; (after! org
-  ;;   (map! :map evil-org-mode-map
-  ;;         :n "o" #'+org/insert-item-below))
+  (map! :after evil-org
+        :map evil-org-mode-map
+        :n "C-o" #'+org/insert-item-below)
 
   ;; Auto save all the time
   ;; (add-hook 'auto-save-hook 'my-commit-org-files) TURNED OFF FOR NOW, TOO MUCH DROPBOX DATA
@@ -460,7 +465,7 @@ clients, file templates and snippets.
     (interactive)
     "Commit all org files"
     (org-save-all-org-buffers)
-    (shell-command "~/Dropbox/org/auto_commit.sh"))
+    (shell-command "~/org/auto_commit.sh"))
 
   ;; Todo keywords
   (setq org-todo-keywords
@@ -508,7 +513,7 @@ clients, file templates and snippets.
       (air--org-swap-tags new)))
 
 
-  ;; Todo filteres
+  ;; Todo filters
   (setq org-agenda-todo-ignore-scheduled t
         org-agenda-todo-ignore-deadlines t
         hl-fill-column-mode nil))
@@ -549,9 +554,9 @@ clients, file templates and snippets.
   :after org
   :config
   (setq org-noter-notes-window-location 'vertical-split
-        org-noter-notes-search-path '("~/Dropbox/org")
+        org-noter-notes-search-path '("~/org")
         org-noter-auto-save-last-location t
-        org-noter-default-notes-file-names '("~/Dropbox/org/pdf_notes.org")))
+        org-noter-default-notes-file-names '("~/org/pdf_notes.org")))
 #+END_SRC
 *** Org Roam
 #+begin_src emacs-lisp
@@ -559,7 +564,7 @@ clients, file templates and snippets.
       :hook
       (after-init . org-roam-mode)
       :custom
-      (org-roam-directory "~/Dropbox/org")
+      (org-roam-directory "~/org")
       :bind (:map org-roam-mode-map
               (("C-c n l" . org-roam)
                ("C-c n f" . org-roam-find-file)
@@ -568,16 +573,25 @@ clients, file templates and snippets.
                ("C-c n g" . org-roam-graph))
               :map org-mode-map
               (("C-c n i" . org-roam-insert))))
+(map! :leader
+      (:prefix-map ("j" . "journal")
+       :desc "Capture new entry" "n" #'org-roam-dailies-capture-today
+       :desc "Go to today's entry" "t" #'org-roam-dailies-find-today
+       :desc "Go to yesterday's entry" "y" #'org-roam-dailies-find-yesterday
+       :desc "Go to specific date" "d" #'org-roam-dailies-find-date))
+(map! :leader
+      :desc "Add org-roam node"
+      "a" #'org-roam-node-insert)
 
 (use-package! company-org-roam
               :when (featurep! :completion company)
               :after org-roam
               :config
               (set-company-backend! 'org-mode '(company-org-roam company-yasnippet company-dabbrev)))
-#+end_src
+#+END_SRC
 
 ** Swift
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
 ;; (require 'company-sourcekit)
 ;; (add-to-list 'company-backends 'company-sourcekit)
 
@@ -592,4 +606,4 @@ clients, file templates and snippets.
 (with-eval-after-load 'lsp-mode
   (setq lsp-diagnostics-modeline-scope :project)
   (add-hook 'lsp-managed-mode-hook 'lsp-diagnostics-modeline-mode))
-#+END_SRC
+#+end_src
