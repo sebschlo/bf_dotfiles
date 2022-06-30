@@ -135,6 +135,8 @@
 (setq org-tags-exclude-from-inheritance (quote ("crypt"))
       org-crypt-key nil)
 
+(server-start)
+
 ;; If you use `org' and don't want your org files in the default location below,
 ;; change `org-directory'. It must be set before org loads!
 (setq org-directory "~/org")
@@ -154,7 +156,7 @@
   (add-hook 'before-save-hook #'+org|update-cookies nil t)
   (add-hook 'evil-insert-state-exit-hook #'+org|update-cookies nil t)
 
-  ;; Org smart insert item. [ Don't want this behavior but leaving here for binding reference ]
+  ;; Org smart insert item.
   (map! :after evil-org
         :map evil-org-mode-map
         :n "C-o" #'+org/insert-item-below)
@@ -274,10 +276,11 @@
        :desc "Capture new entry" "n" #'org-roam-dailies-capture-today
        :desc "Go to today's entry" "t" #'org-roam-dailies-find-today
        :desc "Go to yesterday's entry" "y" #'org-roam-dailies-find-yesterday
-       :desc "Go to specific date" "d" #'org-roam-dailies-find-date))
+       :desc "Go to specific date" "d" #'org-roam-dailies-find-date
+       :desc "Toggle the org-roam buffer" "b" #'org-roam-buffer-toggle))
 (map! :leader
-      :desc "Add org-roam node"
-      "a" #'org-roam-node-insert)
+      :desc "Add org-roam node" "a" #'org-roam-node-insert
+      :desc "Find org-roam node" "F" #'org-roam-node-find)
 
 (use-package! company-org-roam
               :when (featurep! :completion company)
