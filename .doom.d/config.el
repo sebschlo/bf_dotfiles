@@ -30,8 +30,8 @@
 ;;
 ;; They all accept either a font-spec, font string ("Input Mono-12"), or xlfd
 ;; font string. You generally only need these two:
-(setq doom-font (font-spec :family "monospace" :size 16))
-(setq doom-variable-pitch-font (font-spec :family "Avenir Next" :size 12))
+(setq doom-font (font-spec :family "monospace" :size 17.0))
+(setq doom-variable-pitch-font (font-spec :family "Avenir Next" :size 17.0))
 
 ;There are two ways to load a theme. Both assume the theme is installed and
 ;available. You can either set `doom-theme' or manually load a theme with the
@@ -43,13 +43,14 @@
 ;; (setq doom-theme 'doom-laserwave)
 ;; (setq doom-theme 'doom-moonlight)
 ;; (setq doom-theme 'doom-nord)
-(setq doom-theme 'doom-nord-light)
-;; (setq doom-theme 'doom-outrun-electric)
+;; (setq doom-theme 'doom-nord-light)
+(setq doom-theme 'doom-outrun-electric)
 
 ;; This determines the style of line numbers in effect. If set to `nil', line
 ;; numbers are disabled. For relative line numbers, set this to `relative'.
 (setq display-line-numbers-type 'relative)
 (setq doom-line-numbers-style 'relative)
+(setq blink-cursor-mode 1)
 
 (remove-hook 'text-mode-hook #'auto-fill-mode)
 (add-hook 'message-mode-hook #'word-wrap-mode)
@@ -82,15 +83,12 @@
         (switch-to-buffer (other-buffer))))))
 
 ;; Window navigation
-;; (map!
-;;  "C-h"    #'evil-window-left
-;;  "C-j"    #'evil-window-down
-;;  "C-k"    #'evil-window-up
-;;  "C-l"    #'evil-window-right
-;;  "M-w"    #'delete-frame
-;;  "C-`"      #'+popup/toggle
-;;  "<C-tab>"  #'+popup/other
-;; )
+(map!
+ :nv "C-h" #'evil-window-left
+ :nv "C-j" #'evil-window-down
+ :nv "C-k" #'evil-window-up
+ :nv "C-l" #'evil-window-right
+ :nv "C-w" #'evil-window-delete)
 
 ;; Org checkboxes
 (map! (:leader :desc "Org Toggle Checkbox" "m m" #'org-toggle-checkbox))
@@ -109,9 +107,11 @@
 (map! (:leader :desc "Mark todo as done" "d" #'my-org-todo-done))
 
 (map! (:leader :desc "Schedule todo" "m s" #'org-schedule))
+(map! (:leader :desc "Org-Todo" "T" #'org-todo))
 
 ;; Insert time on timestamps
-(defun my-org-time-stamp ()
+(defun
+    my-org-time-stamp ()
   (interactive)
   "Insert timestamp with time"
   (org-time-stamp t))
@@ -137,11 +137,22 @@
 
 (server-start)
 
+(global-undo-tree-mode)
+
+(setq projectile-mode-line "Projectile")
+(defadvice projectile-project-root (around ignore-remote first activate)
+  (unless (file-remote-p default-directory) ad-do-it))
+
 ;; If you use `org' and don't want your org files in the default location below,
 ;; change `org-directory'. It must be set before org loads!
 (setq org-directory "~/org")
-;;(setq org-agenda-files '("~/org"))
 (setq org-agenda-files (directory-files-recursively "~/org/" "\\.org$"))
+(setq org-agenda-show-future-repeats nil)
+(setq org-cycle-separator-lines -1)
+
+(map! :leader
+      :desc "Access org agenda" "A"
+      'org-agenda "a" "a")
 
 (after! org
   ;; Log timestamp on org todos
@@ -155,6 +166,14 @@
 
   (add-hook 'before-save-hook #'+org|update-cookies nil t)
   (add-hook 'evil-insert-state-exit-hook #'+org|update-cookies nil t)
+
+  ;; Recompute agenda files and nodes
+  (defun +org|add-agenda-files ()
+    (when (eq major-mode 'org-mode)
+      (org-roam-db-sync)
+      (setq org-agenda-files (directory-files-recursively "~/org/" "\\.org$"))))
+
+  (add-hook 'after-save-hook #'+org|add-agenda-files)
 
   ;; Org smart insert item.
   (map! :after evil-org
@@ -171,8 +190,8 @@
 
   ;; Todo keywords
   (setq org-todo-keywords
-        '((sequence "TODO(t)" "PROJ(p)" "STRT(s!)" "|" "DONE(d@/!)" "KILL(k@/!)")
-          (sequence "WAIT(w@/!)" "|" "DELG(g@/!)")))
+        '((sequence "TODO(t/!)" "PROJ(p)" "STRT(s!)" "|" "DONE(d/!)" "KILL(k/!)")
+          (sequence "WAIT(w/!)" "|" "DELG(g/!)")))
 
 
   ;; Tags
@@ -215,10 +234,24 @@
       (air--org-swap-tags new)))
 
 
-  ;; Todo filters
+  ;; Agenda setup
   (setq org-agenda-todo-ignore-scheduled t
         org-agenda-todo-ignore-deadlines t
-        hl-fill-column-mode nil))
+        hl-fill-column-mode nil)
+
+  (setq org-agenda-custom-commands
+        '(("c" "Closed review"
+           tags "TODO=\"DONE\"&CLOSED>=\"<-1w>\""
+           ((org-agenda-files (directory-files-recursively "~/org/" "\\.org$")))
+        )))
+
+  ;; Capture Templates
+  (setq org-capture-templates
+      '(("t" "Todo" entry (file+headline "~/org/todo.org" "Tasks")
+         "* TODO %?\n  %i\n  %a")
+        ("j" "Journal" entry (file+datetree "~/org/journal.org")
+         "* %?\nEntered on %U\n  %i\n  %a"))))
+
 
 ;; Alfred Integration
 (defadvice org-switch-to-buffer-other-window
@@ -259,18 +292,18 @@
         org-noter-default-notes-file-names '("~/org/pdf_notes.org")))
 
 (use-package org-roam
-      :hook
-      (after-init . org-roam-mode)
-      :custom
-      (org-roam-directory "~/org")
-      :bind (:map org-roam-mode-map
-              (("C-c n l" . org-roam)
-               ("C-c n f" . org-roam-find-file)
-               ("C-c n j" . org-roam-jump-to-index)
-               ("C-c n b" . org-roam-switch-to-buffer)
-               ("C-c n g" . org-roam-graph))
-              :map org-mode-map
-              (("C-c n i" . org-roam-insert))))
+  :hook
+  (after-init . org-roam-mode)
+  :custom
+  (org-roam-directory "~/org")
+  :bind (:map org-roam-mode-map
+         (("C-c n l" . org-roam)
+          ("C-c n f" . org-roam-find-file)
+          ("C-c n j" . org-roam-jump-to-index)
+          ("C-c n b" . org-roam-switch-to-buffer)
+          ("C-c n g" . org-roam-graph))
+         :map org-mode-map
+         (("C-c n i" . org-roam-insert))))
 (map! :leader
       (:prefix-map ("j" . "journal")
        :desc "Capture new entry" "n" #'org-roam-dailies-capture-today
@@ -282,11 +315,36 @@
       :desc "Add org-roam node" "a" #'org-roam-node-insert
       :desc "Find org-roam node" "F" #'org-roam-node-find)
 
+(defadvice org-roam-insert (around append-if-in-evil-normal-mode activate compile)
+  "If in evil normal mode and cursor is on a whitespace character, then go into
+append mode first before inserting the link. This is to put the link after the
+space rather than before."
+  (let ((is-in-evil-normal-mode (and (bound-and-true-p evil-mode)
+                                     (not (bound-and-true-p evil-insert-state-minor-mode))
+                                     (looking-at "[[:blank:]]"))))
+    (if (not is-in-evil-normal-mode)
+        ad-do-it
+      (evil-append 0)
+      ad-do-it
+      (evil-normal-state))))
+
 (use-package! company-org-roam
-              :when (featurep! :completion company)
-              :after org-roam
-              :config
-              (set-company-backend! 'org-mode '(company-org-roam company-yasnippet company-dabbrev)))
+  :when (featurep! :completion company)
+  :after org-roam
+  :config
+  (set-company-backend! 'org-mode '(company-org-roam company-yasnippet company-dabbrev)))
+
+(use-package! websocket
+  :after org-roam)
+
+(use-package! org-roam-ui
+  :after org
+  :hook (after-init . org-roam-ui-mode)
+  :config
+  (setq org-roam-ui-sync-theme t
+        org-roam-ui-follow t
+        org-roam-ui-update-on-save t
+        org-roam-ui-open-on-start t))
 
 ;; (require 'company-sourcekit)
 ;; (add-to-list 'company-backends 'company-sourcekit)

@@ -7,4 +7,5 @@
           :recipe (:host github :repo "jethrokuan/org-roam"))
 (package! company-org-roam
   :recipe (:host github :repo "jethrokuan/company-org-roam"))
-(package! lsp-sourcekit)
+(unpin! org-roam)
+(package! org-roam-ui)

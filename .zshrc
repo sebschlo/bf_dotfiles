@@ -90,6 +90,8 @@ source $ZSH/oh-my-zsh.sh
 if [[ -n $SSH_CONNECTION ]]; then
   export EDITOR='vim'
 else
+  alias vim=nvim
+  alias vi=nvim
   export EDITOR='nvim'
 fi
 
@@ -104,7 +106,7 @@ fi
 # Example aliases
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
-alias vim=nvim
+alias v=nvim
 
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
@@ -152,7 +154,7 @@ prompt_virtualenv() {
 
 # history
 export HISTCONTROL=ignoredups:erasedups
-HISTSIZE=10000
+HISTSIZE=100000
 HISTFILESIZE=-1
 setopt share_history
 
@@ -167,3 +169,8 @@ alias tmux='tmux -2'
 
 # VIM operations on prompt
 bindkey -v
+eval "$(/opt/homebrew/bin/brew shellenv)"
+
+export PATH=$PATH:/Applications/ARM/bin
+export PATH="/usr/local/sbin:$PATH"
+export PATH="/opt/homebrew/opt/cython/bin:$PATH"

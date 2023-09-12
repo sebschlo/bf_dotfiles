@@ -28,6 +28,7 @@ Plug 'dense-analysis/ale'
 Plug 'Shougo/deoplete.nvim'
 Plug 'roxma/nvim-yarp'
 Plug 'roxma/vim-hug-neovim-rpc'
+Plug 'yangmillstheory/vim-snipe'
 
 call plug#end()
 
@@ -70,7 +71,7 @@ nnoremap <C-T> :NERDTreeToggle<CR>
 " j
 nnoremap ê :NERDTreeFind<CR>
 " f
-nnoremap <C-R> :Rg<CR>
+nnoremap <C-E> :Rg<CR>
 " o
 nnoremap <C-S> :FZF<CR>
 " i
