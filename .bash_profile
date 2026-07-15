@@ -97,15 +97,7 @@ _fzf_compgen_dir() {
   export PATH="$HOME/.cargo/bin:$PATH"
 
   HOMEBREW_NO_AUTO_UPDATE=1
-
-  # # RUBY
-  source /usr/local/share/chruby/chruby.sh
-  # source /usr/local/share/chruby/auto.sh
-  # chruby will check the current and parent directories for a .ruby-version file.
-  chruby 2.4.0
 #fi
-
-export PATH="$HOME/.poetry/bin:$PATH"
 
 # >>> conda initialize >>>
 # !! Contents within this block are managed by 'conda init' !!

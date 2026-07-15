@@ -87,6 +87,9 @@ export HOMEBREW_NO_AUTO_UPDATE=1
 export PATH="$PATH:/Users/sebastian/.lmstudio/bin"
 eval "$(rbenv init -)"
 
+# EMACS / DOOM
+export PATH="$HOME/.emacs.d/bin:/Applications/Emacs.app/Contents/MacOS:/Applications/Emacs.app/Contents/MacOS/bin:$PATH"
+
 # EXPO RN / ANDROID DEVELOPMENT
 export PATH="/opt/homebrew/opt/openjdk@17/bin:$PATH"
 export JAVA_HOME="/opt/homebrew/opt/openjdk@17"
