@@ -22,6 +22,9 @@ export PATH="/opt/homebrew/sbin:$PATH"
 alias vim=nvim
 export EDITOR='nvim'
 
+# Locale: fastlane and CocoaPods require UTF-8
+export LANG=en_US.UTF-8
+
 # NVM with improved lazy loading and .nvmrc support
 export NVM_DIR="$HOME/.nvm"
 
