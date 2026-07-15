@@ -37,7 +37,6 @@ link .inputrc
 link .tmux.conf
 link .vimrc
 link .zshrc
-link .config/fish/config.fish   # file only: fish writes runtime state next to it
 link .config/starship.toml
 
 # whole directories (nothing writes into these at runtime except lazy-lock.json,
