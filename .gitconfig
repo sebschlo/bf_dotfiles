@@ -1,7 +1,9 @@
 # This is Git's per-user configuration file.
 [user]
-  name = sebschlo
-  email = seb@breakfaststudio.com
+# Please adapt and uncomment the following lines:
+  name = Sebastian Schloesser
+	email = s.schloesser@gmail.com
+  signingkey = ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOtcvV/wPgVCZcV7d8vmuoUewpNuS2YzdpzY7s4lYRnt
 [alias]
   s = status
   sl = log --graph --author=Sebastian --pretty=format:'commit: %C(bold red)%h%Creset %C(red)<%H>%Creset %C(bold magenta)%d %Creset%ndate: %C(bold yellow)%cd %Creset%C(yellow)%cr%Creset%nauthor: %C(bold blue)%an%Creset %C(blue)<%ae>%Creset%n%C(cyan)%s%n%Creset'
@@ -30,7 +32,6 @@
 	smudge = git-lfs smudge -- %f
 [core]
 	editor = nvim
-	excludesfile = /Users/seb/.gitignore_global
 [pager]
 	branch = false
 [diff]
@@ -49,3 +50,24 @@
 	keepBackup = false
 [init]
 	defaultBranch = main
+[pull]
+  rebase = true
+  [user]
+  signingkey = ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOtcvV/wPgVCZcV7d8vmuoUewpNuS2YzdpzY7s4lYRnt
+
+[gpg]
+  format = ssh
+
+[gpg "ssh"]
+  program = "/Applications/1Password.app/Contents/MacOS/op-ssh-sign"
+
+[commit]
+  gpgsign = true
+[push]
+	autoSetupRemote = true
+[credential "https://github.com"]
+	helper = 
+	helper = !/opt/homebrew/bin/gh auth git-credential
+[credential "https://gist.github.com"]
+	helper = 
+	helper = !/opt/homebrew/bin/gh auth git-credential
