@@ -53,7 +53,7 @@ HISTSIZE=10000
 HISTFILESIZE=-1
 
 # Aliases
-alias ls='ls -G'
+if [ "$(uname)" = "Darwin" ]; then alias ls='ls -G'; else alias ls='ls --color=auto'; fi
 alias showfiles='defaults write com.apple.finder AppleShowAllFiles YES && sudo killall Finder'
 alias hidefiles='defaults write com.apple.finder AppleShowAllFiles NO && sudo killall Finder'
 alias tmux='tmux -2'
@@ -88,7 +88,7 @@ export HOMEBREW_NO_AUTO_UPDATE=1
 
 # Added by LM Studio CLI (lms)
 export PATH="$PATH:/Users/sebastian/.lmstudio/bin"
-eval "$(rbenv init -)"
+command -v rbenv >/dev/null && eval "$(rbenv init -)"
 
 # EMACS / DOOM
 export PATH="$HOME/.emacs.d/bin:/Applications/Emacs.app/Contents/MacOS:/Applications/Emacs.app/Contents/MacOS/bin:$PATH"
@@ -103,12 +103,16 @@ export PATH=$PATH:$ANDROID_HOME/platform-tools
 # Machine-local secrets and env — kept out of the public dotfiles repo
 [ -f ~/.zshrc.local ] && source ~/.zshrc.local
 
-# Autosuggestions & syntax highlighting (brew-installed)
+# Autosuggestions & syntax highlighting (brew on macOS, apt on Debian/Ubuntu)
 [ -f /opt/homebrew/share/zsh-autosuggestions/zsh-autosuggestions.zsh ] && \
   source /opt/homebrew/share/zsh-autosuggestions/zsh-autosuggestions.zsh
+[ -f /usr/share/zsh-autosuggestions/zsh-autosuggestions.zsh ] && \
+  source /usr/share/zsh-autosuggestions/zsh-autosuggestions.zsh
 bindkey '^f' autosuggest-accept
 [ -f /opt/homebrew/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh ] && \
   source /opt/homebrew/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+[ -f /usr/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh ] && \
+  source /usr/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 
 # Prompt
 eval "$(starship init zsh)"
