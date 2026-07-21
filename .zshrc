@@ -17,6 +17,9 @@ source $ZSH/oh-my-zsh.sh
 # User configuration
 export PATH=/opt/homebrew/bin:$PATH
 export PATH="/opt/homebrew/sbin:$PATH"
+if [[ ":$PATH:" != *":$HOME/.local/bin:"* ]]; then
+  export PATH="$HOME/.local/bin:$PATH"
+fi
 
 # Preferred editor for local and remote sessions
 alias vim=nvim
