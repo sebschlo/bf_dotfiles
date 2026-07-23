@@ -21,7 +21,7 @@ services:
     environment:
       - OTR_PORT=0 # HTTP mode only, no MQTT
     volumes:
-      - ./data/owntracks:/store
+      - ${DATA_DIR}/owntracks:/store
 
   webdav:
     image: ghcr.io/hacdias/webdav:latest
@@ -29,7 +29,7 @@ services:
     command: ["--config", "/config.yml"]
     volumes:
       - ./webdav.yml:/config.yml:ro
-      - ./data/dav:/data
+      - ${DATA_DIR}/dav:/data
 
 volumes:
   caddy_data:

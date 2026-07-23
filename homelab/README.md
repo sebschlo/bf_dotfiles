@@ -6,10 +6,11 @@ OwnTracks Recorder and a WebDAV server for Zotero.
 ## Setup (on the box)
 
 ```sh
+sudo mkdir -p /srv/homelab && sudo chown $USER: /srv/homelab
 cd ~/src/bf_dotfiles/homelab
 cp .env.example .env
-docker run --rm caddy:2 caddy hash-password --plaintext 'your-password'
-# edit .env: set TS_HOSTNAME, BASIC_USER, BASIC_HASH
+docker run --rm caddy:2 caddy hash-password --plaintext 'your-password' | sed 's/\$/$$/g'
+# edit .env: set TS_HOSTNAME, BASIC_USER, BASIC_HASH (the $$-escaped hash), DATA_DIR
 docker compose up -d
 ```
 
@@ -43,7 +44,7 @@ Then point clients (shell-gpt etc.) at `http://<box>:11434`.
 
 ## Notes
 
-- Data lives in `./data/` (gitignored). Back this up.
+- Data lives in `$DATA_DIR` (default `/srv/homelab`), outside the repo. Back this up.
 - MQTT is disabled (`OTR_PORT=0`); the phone posts over HTTP.
 - Caddy fetches the `*.ts.net` cert through the mounted tailscaled socket —
   requires `tailscale up` on the host and HTTPS certificates enabled in the
