@@ -1,6 +1,13 @@
 # Minimal prompt (adapted from kunchenguid/dotfiles), plus python/conda env display
 add_newline = false
-format = "$directory$git_branch$git_status$python$conda$cmd_duration$line_break$character"
+format = "$hostname$directory$git_branch$git_status$python$conda$cmd_duration$line_break$character"
+
+# Shows only in SSH sessions — i.e. whenever you're on the box, not the mac.
+# Set ssh_only = false if you also want it in local terminals on the box.
+[hostname]
+ssh_only = true
+format = "[$hostname]($style) "
+style = "bold yellow"
 
 [character]
 success_symbol = "[❯](purple)"

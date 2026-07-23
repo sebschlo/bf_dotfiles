@@ -12,7 +12,7 @@ REPO_DIR="$HOME/src/bf_dotfiles"
 
 # Everything apt should install. Edit to taste.
 PACKAGES="git curl ca-certificates zsh tmux fzf ripgrep fd-find unzip
-  htop tree jq wget python3 python3-pip python3-venv locales
+  htop tree jq wget tig python3 python3-pip python3-venv locales
   zsh-autosuggestions zsh-syntax-highlighting"
 
 main() {
