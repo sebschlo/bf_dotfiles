@@ -15,13 +15,37 @@ services:
       # Lets Caddy fetch the box's *.ts.net TLS cert from tailscaled
       - /var/run/tailscale/tailscaled.sock:/var/run/tailscale/tailscaled.sock
 
+  mosquitto:
+    image: eclipse-mosquitto:2
+    restart: unless-stopped
+    ports:
+      - "1883:1883" # phone connects over the tailnet
+    volumes:
+      - ./mosquitto.conf:/mosquitto/config/mosquitto.conf:ro
+      - ${DATA_DIR}/mosquitto:/mosquitto/data
+
   owntracks:
     image: owntracks/recorder
     restart: unless-stopped
+    depends_on:
+      - mosquitto
     environment:
-      - OTR_PORT=0 # HTTP mode only, no MQTT
+      - OTR_HOST=mosquitto
+      - OTR_PORT=1883
+      - OTR_USER=${MQTT_USER}
+      - OTR_PASS=${MQTT_PASS}
     volumes:
       - ${DATA_DIR}/owntracks:/store
+
+  # Host networking (HA needs it for discovery); UI at http://<box>:8123,
+  # not behind Caddy — HA doesn't support URL subpaths.
+  homeassistant:
+    image: ghcr.io/home-assistant/home-assistant:stable
+    restart: unless-stopped
+    network_mode: host
+    volumes:
+      - ${DATA_DIR}/hass:/config
+      - /etc/localtime:/etc/localtime:ro
 
   webdav:
     image: ghcr.io/hacdias/webdav:latest
