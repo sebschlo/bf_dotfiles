@@ -1,0 +1,26 @@
+# All services behind one hostname (the box's Tailscale name).
+# Caddy auto-fetches the TLS cert from tailscaled for *.ts.net hosts.
+{$TS_HOSTNAME} {
+	# One set of credentials guards everything (phone + Zotero use it too)
+	basic_auth {
+		{$BASIC_USER} {$BASIC_HASH}
+	}
+
+	# OwnTracks recorder.
+	#   phone posts to: https://<host>/owntracks/pub
+	#   web UI:         https://<host>/owntracks/web/
+	handle_path /owntracks/* {
+		reverse_proxy owntracks:8083
+	}
+
+	# WebDAV for Zotero.
+	#   In Zotero, set URL to: https://<host>/dav
+	#   (Zotero creates and uses /dav/zotero/ itself)
+	handle /dav/* {
+		reverse_proxy webdav:6065
+	}
+
+	handle {
+		respond "ok" 200
+	}
+}

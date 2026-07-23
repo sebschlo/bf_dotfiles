@@ -1,0 +1,36 @@
+# Personal homelab stack. See README.md for setup.
+# Everything is reachable only through Caddy on 443 (TLS via Tailscale cert).
+services:
+  caddy:
+    image: caddy:2
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+    env_file: .env
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy_data:/data
+      - caddy_config:/config
+      # Lets Caddy fetch the box's *.ts.net TLS cert from tailscaled
+      - /var/run/tailscale/tailscaled.sock:/var/run/tailscale/tailscaled.sock
+
+  owntracks:
+    image: owntracks/recorder
+    restart: unless-stopped
+    environment:
+      - OTR_PORT=0 # HTTP mode only, no MQTT
+    volumes:
+      - ./data/owntracks:/store
+
+  webdav:
+    image: ghcr.io/hacdias/webdav:latest
+    restart: unless-stopped
+    command: ["--config", "/config.yml"]
+    volumes:
+      - ./webdav.yml:/config.yml:ro
+      - ./data/dav:/data
+
+volumes:
+  caddy_data:
+  caddy_config:
