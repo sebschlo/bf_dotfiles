@@ -119,3 +119,7 @@ bindkey '^f' autosuggest-accept
 
 # Prompt
 eval "$(starship init zsh)"
+
+# 1Password agent service-account setup lives in ~/.zshenv (non-interactive shells
+# need it too — .zshrc is interactive-only, so agent/build shells got no token and
+# fell back to the biometric prompt).
