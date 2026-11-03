@@ -1,3 +1,7 @@
+# The following lines were added by Docker Desktop to add commands to your PATH.
+export PATH="$PATH:/Users/sebastian/.docker/bin"
+# End of Docker Desktop section.
+
 # Unlike earlier versions, Bash4 sources your bashrc on non-interactive shells.
 # The line below prevents anything in this file from creating output that will
 # break utilities that use ssh as a pipe, including git and mercurial.

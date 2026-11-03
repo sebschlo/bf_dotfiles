@@ -2,7 +2,7 @@
 [user]
 # Please adapt and uncomment the following lines:
   name = Sebastian Schloesser
-	email = s.schloesser@gmail.com
+	email = info@technicalassemblage.com
   signingkey = ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOtcvV/wPgVCZcV7d8vmuoUewpNuS2YzdpzY7s4lYRnt
 [alias]
   s = status
