@@ -123,3 +123,13 @@ eval "$(starship init zsh)"
 # 1Password agent service-account setup lives in ~/.zshenv (non-interactive shells
 # need it too — .zshrc is interactive-only, so agent/build shells got no token and
 # fell back to the biometric prompt).
+
+# rsync: Apple's /usr/bin/rsync (which Xcode's IPA export runs) starts its local peer
+# as whatever `rsync` is first on PATH; Homebrew's 3.x rejects its flags
+# ("--extended-attributes: unknown option"). So PATH resolves rsync to Apple's, as
+# Xcode.app sees it, and typing `rsync` by hand still gets Homebrew's via the alias
+# (aliases don't reach child processes). Last in the file: it must beat every
+# /opt/homebrew/bin prepend above. ~/.zshenv repeats the PATH line for shells
+# that never read this file.
+export PATH="$HOME/.local/path-overrides:$PATH"
+[ -x /opt/homebrew/bin/rsync ] && alias rsync=/opt/homebrew/bin/rsync

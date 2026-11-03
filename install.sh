@@ -44,5 +44,6 @@ link .config/starship.toml
 link .config/nvim
 link .config/wezterm
 link .doom.d
+link .local/path-overrides
 
 echo "done. backups (if any) in: $BACKUP"
